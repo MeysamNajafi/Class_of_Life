@@ -20,4 +20,7 @@ public:
 
     void SmallMutationDNA(char ch1, char ch2, int n);
     void BigMutationDNA(string str1, string str2);
+    void ReverseMutationRNA(string str1);
+    void ReverseMutationDNA(string str1);
+
 };
