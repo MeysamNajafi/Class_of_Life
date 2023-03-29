@@ -1,9 +1,12 @@
-#include "/Users/meysam/stdc++.h"
+// #include "/Users/meysam/stdc++.h"
 #include "genome.h"
-#include "animal.h"
-#include "cell.h"
-#include "virus.h"
+#include <string>
+using namespace std;
 
 int main()
 {
+    Genome gen;
+    // gen.setRNA("AACCTTG");
+    // gen.setDNA("AACCTTG");
+    // gen.BigMutationDNA("AAC","A");
 }
