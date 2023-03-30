@@ -12,6 +12,7 @@ void Genome::setRNA(string rna)
         RNA.push_back(rna[i]);
     }
 }
+
 void Genome::setDNA(string dna)
 {
     for (int i = 0; i < dna.size(); i++)
@@ -20,6 +21,24 @@ void Genome::setDNA(string dna)
         DNA.second.push_back(GivePair(dna[i]));
     }
   
+}
+
+string Genome::getRNA()
+{
+    string RNAStr(RNA.begin(), RNA.end());
+    return RNAStr;
+}
+
+string Genome::getDNAFirst()
+{
+    string DNAFirstStr(DNA.first.begin(), DNA.first.end());
+    return DNAFirstStr;
+}
+
+string Genome::getDNASeconds()
+{
+    string DNASecondStr(DNA.second.begin(), DNA.second.end());
+    return DNASecondStr;
 }
 
 void Genome::MakeDNABasedOnRNA()
