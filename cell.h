@@ -1,17 +1,17 @@
 #pragma once
-#include "genome.cpp"
+#include "genome.h"
 #include <vector>
-
 
 using namespace std;
 
-class Cell
+class Cell : public Genome
 {
-    private:
-        vector<Genome> Chromosomes;
-    public:
-        void setChromosome(int chromosomes);
-        Genome getChromosome(int n);
+private:
+    vector<Genome> Chromosomes;
 
-        bool CellDeath();
+public:
+    void addChromosome(Genome genome);
+    Genome getChromosome(int n);
+
+    void CellDeath();
 };
