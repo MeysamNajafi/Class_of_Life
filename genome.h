@@ -13,6 +13,11 @@ private:
 public:
     void setRNA(string rna);
     void setDNA(string dna);
+
+    string getRNA();
+    string getDNAFirst();
+    string getDNASecond();
+
     void MakeDNABasedOnRNA();
 
     void SmallMutationRNA(char ch1, char ch2, int n);
@@ -20,6 +25,7 @@ public:
 
     void SmallMutationDNA(char ch1, char ch2, int n);
     void BigMutationDNA(string str1, string str2);
+
     void ReverseMutationRNA(string str1);
     void ReverseMutationDNA(string str1);
 
