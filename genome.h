@@ -16,7 +16,7 @@ public:
 
     string getRNA();
     string getDNAFirst();
-    string getDNASeconds();
+    string getDNASecond();
 
     void MakeDNABasedOnRNA();
 
