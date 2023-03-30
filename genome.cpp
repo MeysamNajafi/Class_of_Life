@@ -35,7 +35,7 @@ string Genome::getDNAFirst()
     return DNAFirstStr;
 }
 
-string Genome::getDNASeconds()
+string Genome::getDNASecond()
 {
     string DNASecondStr(DNA.second.begin(), DNA.second.end());
     return DNASecondStr;
