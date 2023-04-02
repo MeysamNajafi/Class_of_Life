@@ -15,15 +15,9 @@ public:
 
     void CellDeath();
 
-    // Chromosome doesn't have RNA. so there is no need to have mutatuins method for RNA
-    // void SmallMutationRNA(char ch1, char ch2, int n, int m);
-    // void BigMutationRNA(string str1, int n, string str2, int m);
-    // void ReverseMutationRNA(string str1, int n);
-
     void SmallMutationDNA(char ch1, char ch2, int n, int m);
     void BigMutationDNA(string str1, int n, string str2, int m);
-
     void ReverseMutationDNA(string str1, int n);
 
-    
+    void Palindorme(int n);
 };

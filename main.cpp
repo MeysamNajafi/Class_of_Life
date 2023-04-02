@@ -7,11 +7,12 @@ using namespace std;
 int main()
 {
     Genome gen, gen2;
-    gen.setDNA("AAACCC");
-    gen2.setDNA("TTCCGGA");
+    gen.setDNA("AATTAAGCTC");
+    gen2.setDNA("TTCGAA");
 
     Cell cell;
     cell.addChromosome(gen);
     cell.addChromosome(gen2);
-    cell.BigMutationDNA("AA",0,"GG",1);
+    // cell.BigMutationDNA("AA",0,"GG",1);
+    cell.Palindorme(1);
 }

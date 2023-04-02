@@ -2,6 +2,22 @@
 #include <iostream>
 #include "utils.h"
 
+// =====================
+// HELPER FUNCTIONS
+// =====================
+bool isPalindrome(string s)
+{
+    int n = s.length();
+    for (int i = 0; i < n / 2; i++)
+    {
+        if (s[i] != GivePair(s[ n - i -1 ]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 void Cell::addChromosome(Genome genome)
 {
     Chromosomes.push_back(genome);
@@ -58,22 +74,6 @@ void Cell::CellDeath()
     }
 }
 
-// void Cell::SmallMutationRNA(char ch1, char ch2, int n, int m)
-// {
-//     Chromosomes[n].SmallMutationRNA(ch1, ch2, n);
-// }
-
-// void Cell::BigMutationRNA(string str1, int n, string str2, int m)
-// {
-//     Chromosomes[n].BigMutationRNA(str1, str2);
-//     Chromosomes[m].BigMutationRNA(str2, str1);
-// }
-
-// void Cell::ReverseMutationRNA(string str1, int n)
-// {
-//     Chromosomes[n].ReverseMutationRNA(str1);
-// }
-
 void Cell::SmallMutationDNA(char ch1, char ch2, int n, int m)
 {
     Chromosomes[m].SmallMutationDNA(ch1, ch2, n);
@@ -88,4 +88,23 @@ void Cell::BigMutationDNA(string str1, int n, string str2, int m)
 void Cell::ReverseMutationDNA(string str1, int n)
 {
     Chromosomes[n].ReverseMutationDNA(str1);
+}
+
+void Cell::Palindorme(int n)
+{
+    if (n >= 0 && n < Chromosomes.size()){
+            string s = Chromosomes[n].getDNAFirst();
+
+            int n = s.length();
+            for (int i = 0; i < n - 4; i++)
+            {
+                for (int j = i + 4; j <= n; j++)
+                {
+                    string substr = s.substr(i, j - i);
+                    if (substr.length() % 2 != 0) continue;
+                    if (isPalindrome(substr))
+                        cout << substr << endl;
+                }
+            }
+    }
 }
