@@ -28,6 +28,10 @@ Genome Cell::getChromosome(int index)
     if (index + 1 <= Chromosomes.size())
         return Chromosomes[index];
 }
+vector<Genome> Cell::getAllChromosomes()
+{
+    return Chromosomes;
+}
 
 void Cell::CellDeath()
 {
