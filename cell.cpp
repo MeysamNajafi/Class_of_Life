@@ -58,16 +58,21 @@ void Cell::CellDeath()
     }
 }
 
-void Cell::SmallMutationRNA(char ch1, char ch2, int n, int m)
-{
-    Chromosomes[n].SmallMutationRNA(ch1, ch2, n);
-}
+// void Cell::SmallMutationRNA(char ch1, char ch2, int n, int m)
+// {
+//     Chromosomes[n].SmallMutationRNA(ch1, ch2, n);
+// }
 
-void Cell::BigMutationRNA(string str1, int n, string str2, int m)
-{
-    Chromosomes[n].BigMutationRNA(str1, str2);
-    Chromosomes[m].BigMutationRNA(str2, str1);
-}
+// void Cell::BigMutationRNA(string str1, int n, string str2, int m)
+// {
+//     Chromosomes[n].BigMutationRNA(str1, str2);
+//     Chromosomes[m].BigMutationRNA(str2, str1);
+// }
+
+// void Cell::ReverseMutationRNA(string str1, int n)
+// {
+//     Chromosomes[n].ReverseMutationRNA(str1);
+// }
 
 void Cell::SmallMutationDNA(char ch1, char ch2, int n, int m)
 {
@@ -78,11 +83,6 @@ void Cell::BigMutationDNA(string str1, int n, string str2, int m)
 {
     Chromosomes[n].BigMutationDNA(str1, str2);
     Chromosomes[m].BigMutationDNA(str2, str1);
-}
-
-void Cell::ReverseMutationRNA(string str1, int n)
-{
-    Chromosomes[n].ReverseMutationRNA(str1);
 }
 
 void Cell::ReverseMutationDNA(string str1, int n)

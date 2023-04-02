@@ -6,11 +6,12 @@ using namespace std;
 
 int main()
 {
-    Genome gen;
+    Genome gen, gen2;
     gen.setDNA("AAACCC");
-    // gen.BigMutationDNA("AAC","A");
+    gen2.setDNA("TTCCGGA");
 
     Cell cell;
-    // cell.addChromosome(gen);
-    // cell.CellDeath();
+    cell.addChromosome(gen);
+    cell.addChromosome(gen2);
+    cell.BigMutationDNA("AA",0,"GG",1);
 }
