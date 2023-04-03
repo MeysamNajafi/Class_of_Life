@@ -1,12 +1,10 @@
 #include "animal.h"
-#include "genome.h"
 #include <iostream>
 #include "utils.h"
 #include <algorithm>
 
 int needleman_wunsch(string s1, string s2, int match_score, int mismatch_penalty, int gap_penalty)
 {
-
     int n = s1.size();
     int m = s2.size();
 
@@ -62,36 +60,57 @@ Animal::Animal(Cell cell){
     this->cell = cell;
 }
 
-double Animal::Similarity( Animal& animal2)
+double Animal::Similarity(Animal& animal2)
 {
-   vector<Genome> Chromosomes = this->cell.getAllChromosomes();
-   vector<Genome> Chromosomes2 = animal2.cell.getAllChromosomes();
-   vector<double> percentages;
+    double similarity;
+    vector<Genome> Chromosomes = this->cell.getAllChromosomes();
+    vector<Genome> Chromosomes2 = animal2.cell.getAllChromosomes();
+    vector<double> percentages;
 
-   for(Genome ch : Chromosomes) { // loop over each chromosome of first animal and find the most similar chromosome with the second animal
-        double highestPerc=0;
+    for(Genome ch : Chromosomes) 
+    { // loop over each chromosome of first animal and find the most similar chromosome with the second animal
+            double highestPerc=0;
 
-        // search in the first part of DNA
-        for (Genome ch2 : Chromosomes2)
-        {
-            double perc = similarityPercentage(ch.getDNAFirst(), ch2.getDNAFirst());
-            if(perc > highestPerc) highestPerc = perc;
-        }
-        // search in the second part of DNA
-        for (Genome ch2 : Chromosomes2)
-        {
-            double perc = similarityPercentage(ch.getDNASecond(), ch2.getDNASecond());
-            if (perc > highestPerc)
-                highestPerc = perc;
-        }
-    
-        percentages.push_back(highestPerc);
-        highestPerc = 0;
-   }
-    double average =0;
-    for (double a: percentages) {
-        average +=a;
+            // search in the first part of DNA
+            for (Genome ch2 : Chromosomes2)
+            {
+                double perc = similarityPercentage(ch.getDNAFirst(), ch2.getDNAFirst());
+                if(perc > highestPerc) highestPerc = perc;
+            }
+            // search in the second part of DNA
+            for (Genome ch2 : Chromosomes2)
+            {
+                double perc = similarityPercentage(ch.getDNASecond(), ch2.getDNASecond());
+                if (perc > highestPerc)
+                    highestPerc = perc;
+            }
+        
+            percentages.push_back(highestPerc);
+            highestPerc = 0;
     }
-    cout << "The similarity score is: " << average / percentages.size() << endl ;
-   
+        double average =0;
+        for (double a: percentages) {
+            average +=a;
+        }
+        similarity = average / percentages.size();
+
+        return similarity;
+}
+
+bool Animal::SameSpecies(Animal &animal2)
+{
+    int n = getAllChromosomes().size();
+    int m = animal2.cell.getAllChromosomes().size();
+
+    if ((Similarity(animal2) >= 0.7) && n == m)
+    {
+        return true;
+    }
+    return false;
+}
+
+Animal Animal::Asexual_reproduction()
+{
+    int n = getAllChromosomes().size();
+
 }
