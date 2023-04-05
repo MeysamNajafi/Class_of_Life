@@ -2,57 +2,39 @@
 #include <iostream>
 #include "utils.h"
 #include <algorithm>
+#include <unordered_set>
 
-int needleman_wunsch(string s1, string s2, int match_score, int mismatch_penalty, int gap_penalty)
+// EDIT INDEX ALGORITHM
+double similarityPercentage(const string &str1, const string &str2)
 {
-    int n = s1.size();
-    int m = s2.size();
-
-    vector<vector<int>> dp(n + 1, vector<int>(m + 1));
-
-    // Initialize first row and column
-    for (int i = 0; i <= n; i++)
-        dp[i][0] = i * gap_penalty;
-    for (int j = 0; j <= m; j++)
-        dp[0][j] = j * gap_penalty;
-
-    for (int i = 1; i <= n; i++)
+    const int len1 = str1.length();
+    const int len2 = str2.length();
+    const int max_len = std::max(len1, len2);
+    int dp[len1 + 1][len2 + 1];
+    for (int i = 0; i <= len1; ++i)
     {
-        for (int j = 1; j <= m; j++)
+        for (int j = 0; j <= len2; ++j)
         {
-            if (s1[i - 1] == s2[j - 1])
+            if (i == 0)
             {
-                dp[i][j] = dp[i - 1][j - 1] + match_score;
+                dp[i][j] = j;
+            }
+            else if (j == 0)
+            {
+                dp[i][j] = i;
+            }
+            else if (str1[i - 1] == str2[j - 1])
+            {
+                dp[i][j] = dp[i - 1][j - 1];
             }
             else
             {
-                dp[i][j] = max({dp[i - 1][j - 1] + mismatch_penalty,
-                                dp[i - 1][j] + gap_penalty,
-                                dp[i][j - 1] + gap_penalty});
+                dp[i][j] = 1 + std::min({dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]});
             }
         }
     }
-
-    // Return the similarity score
-    return dp[n][m];
-}
-
-// This function uses Needleman-Wunsch algorithm to find the similarity between two strings.
-// Also there was another option called LCS but we preferred this algorithm
-// becuase it is more accurate and is used in genetic concepts like DNA, RNA, etc 
-double similarityPercentage(string s1, string s2)
-{
-    int match_score = 2;
-    int mismatch_penalty = -1;
-    int gap_penalty = -1;
-
-    int similarity = needleman_wunsch(s1, s2, match_score, mismatch_penalty, gap_penalty);
-    double similarity_percent = 0.0;
-    if (similarity >= 0)
-    {
-        similarity_percent = (double)similarity / (double)max(s1.size(), s2.size()) * 100.0;
-    }
-    return similarity_percent;
+    const int edit_dist = dp[len1][len2];
+    return (1.0 - static_cast<double>(edit_dist) / max_len) * 100.0;
 }
 
 
@@ -67,7 +49,7 @@ double Animal::Similarity(Animal& animal2)
     vector<Genome> Chromosomes2 = animal2.cell.getAllChromosomes();
     vector<double> percentages;
 
-    for(Genome ch : Chromosomes) 
+    for (Genome ch : Chromosomes) 
     { // loop over each chromosome of first animal and find the most similar chromosome with the second animal
             double highestPerc=0;
 
