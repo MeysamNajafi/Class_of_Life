@@ -97,12 +97,11 @@ double Animal::Similarity(Animal& animal2)
         return similarity;
 }
 
-bool Animal::SameSpecies(Animal &animal2)
-{
-    int n = getAllChromosomes().size();
+bool Animal::operator==(Animal &animal2){
+    int n = this->cell.getAllChromosomes().size();
     int m = animal2.cell.getAllChromosomes().size();
 
-    if ((Similarity(animal2) >= 0.7) && n == m)
+    if ((Similarity(animal2) >= 70) && n == m)
     {
         return true;
     }

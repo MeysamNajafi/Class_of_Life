@@ -14,6 +14,6 @@ public:
     Animal(Cell cell);
 
     double Similarity(Animal &animal2);
-    bool SameSpecies(Animal &animal2);
     Animal Asexual_reproduction();
+    bool operator==(Animal &animal2);
 };
