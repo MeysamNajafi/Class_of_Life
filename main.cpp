@@ -24,9 +24,8 @@ int main()
     Animal animal2(cell2);
     double similarity =  animal.Similarity(animal2);
     cout << "SIMILARITY SCORE IS: " << similarity << endl;
-    bool res = animal == animal2;
-    if(res)
-        cout << "YES";
-    else 
-        cout << "NO";
+
+    Animal newBornAnimal = animal.AsexualReproduction();
+    double newBornanimalSimilarity = newBornAnimal.Similarity(animal);
+    cout << "SIMILARITY SCORE OF NEW BORN ANIMAL IS: " << newBornanimalSimilarity << endl;
 }
