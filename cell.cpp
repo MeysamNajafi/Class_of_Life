@@ -2,11 +2,6 @@
 #include <iostream>
 #include "utils.h"
 
-// =====================
-// HELPER FUNCTIONS
-// =====================
-bool isPalindrome(string s);
-
 void Cell::addChromosome(Genome genome)
 {
     Chromosomes.push_back(genome);
