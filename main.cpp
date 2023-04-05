@@ -9,10 +9,10 @@ using namespace std;
 int main()
 {
     Genome gen, gen2, gen3, gen4;
-    gen.setDNA("AATTAAGCTC");
-    gen2.setDNA("TTCGAA");
-    gen3.setDNA("A");
-    gen4.setDNA("TGCTGA");
+    gen.setDNA("AGTACGCA");
+    gen2.setDNA("TTAGAGCA");
+    gen3.setDNA("AGTACGCA");
+    gen4.setDNA("TTGCAGCA");
 
     Cell cell, cell2;
     cell.addChromosome(gen);
@@ -22,7 +22,8 @@ int main()
 
     Animal animal(cell);
     Animal animal2(cell2);
-    cout << "SIMILARITY SCORE IS: " <<  animal.Similarity(animal2) << endl;
+    double similarity =  animal.Similarity(animal2);
+    cout << "SIMILARITY SCORE IS: " << similarity << endl;
     bool res = animal == animal2;
     if(res)
         cout << "YES";
