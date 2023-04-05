@@ -49,34 +49,30 @@ double Animal::Similarity(Animal& animal2)
     vector<Genome> Chromosomes2 = animal2.cell.getAllChromosomes();
     vector<double> percentages;
 
-    for (Genome ch : Chromosomes) 
-    { // loop over each chromosome of first animal and find the most similar chromosome with the second animal
+    for (Genome ch : Chromosomes) // loop over each chromosome of first animal and find the most similar chromosome with the second animal
+    {     
             double highestPerc=0;
 
             // search in the first part of DNA
             for (Genome ch2 : Chromosomes2)
             {
-                double perc = similarityPercentage(ch.getDNAFirst(), ch2.getDNAFirst());
+                double perc = similarityPercentage(ch.getDNAFirst(), ch2.getDNAFirst()); // search in the first part
+                double perc2 = similarityPercentage(ch.getDNASecond(), ch2.getDNASecond()); // search in the second part
                 if(perc > highestPerc) highestPerc = perc;
-            }
-            // search in the second part of DNA
-            for (Genome ch2 : Chromosomes2)
-            {
-                double perc = similarityPercentage(ch.getDNASecond(), ch2.getDNASecond());
-                if (perc > highestPerc)
-                    highestPerc = perc;
-            }
-        
-            percentages.push_back(highestPerc);
-            highestPerc = 0;
-    }
-        double average =0;
-        for (double a: percentages) {
-            average +=a;
-        }
-        similarity = average / percentages.size();
+                if(perc2 > highestPerc) highestPerc = perc2;
 
-        return similarity;
+                percentages.push_back(highestPerc);
+                highestPerc = 0;
+            }
+    }
+
+    double total = 0;
+    for (double a: percentages) {
+            total += a;
+    }
+
+    similarity = total / percentages.size();
+    return similarity;
 }
 
 bool Animal::operator==(Animal &animal2){
@@ -90,8 +86,59 @@ bool Animal::operator==(Animal &animal2){
     return false;
 }
 
-Animal Animal::Asexual_reproduction()
+Animal Animal::AsexualReproduction()
 {
-    int n = getAllChromosomes().size();
+    srand(time(0));
+    int n = cell.getAllChromosomes().size();
+    double similarity = 0;
+    int counter = 0;
 
+    while (true)
+    {
+        Cell newCell;
+        similarity = 0;
+
+        for (Genome g : cell.getAllChromosomes())
+        { 
+            Genome newGenome;
+            newGenome.setDNA(g.getDNAFirst());
+            newCell.addChromosome(newGenome);
+        }
+
+        // selecting random chromosome
+        for (int i = 0; i < n; i++)
+        {
+            int dnaLength = rand() % (8 - 4 + 1) + 4; // LENGTH OF THE RANDOM DNA WILL BE BETWEEN 4 and 8
+            string dna = ""; 
+            for (int i = 0; i < dnaLength; i++) 
+            {
+                int randNumber = rand() % 4;
+                char randChar;
+                switch (randNumber)
+                {
+                    case 0:
+                        randChar = 'A';
+                        break;
+                    case 1:
+                        randChar = 'T';
+                        break;
+                    case 2:
+                        randChar = 'C';
+                        break;
+                    case 3:
+                        randChar = 'G';
+                        break;
+                }
+                dna += randChar;
+            }
+            
+            Genome newGenome;
+            newGenome.setDNA(dna);
+            newCell.addChromosome(newGenome);
+        }
+        Animal newAnimal(newCell);
+
+        similarity = Similarity(newAnimal);
+        if (similarity > 70) return newAnimal;
+    }
 }
