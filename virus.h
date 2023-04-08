@@ -12,6 +12,5 @@ class Virus : public Genome
     public:
         void setRNA(string rna);
         string getRNA();
-
         void Sickness(Animal animal);
 };
