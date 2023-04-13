@@ -91,62 +91,6 @@ bool Animal::operator==(Animal &animal2)
     return false;
 }
 
-// Animal Animal::AsexualReproduction()
-// {
-//     srand(time(0));
-//     int n = cell.getAllChromosomes().size();
-//     double similarity = 0;
-
-//     while (true)
-//     {
-//         Cell newCell;
-//         similarity = 0;
-
-//         for (Genome g : cell.getAllChromosomes())
-//         { 
-//             Genome newGenome;
-//             newGenome.setDNA(g.getDNAFirst());
-//             newCell.addChromosome(newGenome);
-//         }
-
-//         // selecting random chromosome
-//         for (int i = 0; i < n; i++)
-//         {
-//             int dnaLength = rand() % (8 - 4 + 1) + 4; // LENGTH OF THE RANDOM DNA WILL BE BETWEEN 4 and 8
-//             string dna = ""; 
-//             for (int i = 0; i < dnaLength; i++) 
-//             {
-//                 int randNumber = rand() % 4;
-//                 char randChar;
-//                 switch (randNumber)
-//                 {
-//                     case 0:
-//                         randChar = 'A';
-//                         break;
-//                     case 1:
-//                         randChar = 'T';
-//                         break;
-//                     case 2:
-//                         randChar = 'C';
-//                         break;
-//                     case 3:
-//                         randChar = 'G';
-//                         break;
-//                 }
-//                 dna += randChar;
-//             }
-            
-//             Genome newGenome;
-//             newGenome.setDNA(dna);
-//             newCell.addChromosome(newGenome);
-//         }
-//         Animal newAnimal(newCell);
-
-//         similarity = Similarity(newAnimal);
-//         if (similarity > 70) return newAnimal;
-//     }   
-// }
-
 Animal Animal::operator+(Animal &animal2)
 {
     srand(time(0));
