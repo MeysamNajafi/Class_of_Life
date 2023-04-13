@@ -39,12 +39,12 @@ double similarityPercentage(const string &str1, const string &str2)
     return (1.0 - static_cast<double>(edit_dist) / max_len) * 100.0;
 }
 
-
-Animal::Animal(Cell cell){
+Animal::Animal(Cell cell)
+{
     this->cell = cell;
 }
 
-double Animal::Similarity(Animal& animal2)
+double Animal::Similarity(Animal &animal2)
 {
     double similarity;
     vector<Genome> Chromosomes = this->cell.getAllChromosomes();
@@ -52,32 +52,35 @@ double Animal::Similarity(Animal& animal2)
     vector<double> percentages;
 
     for (Genome ch : Chromosomes) // loop over each chromosome of first animal and find the most similar chromosome with the second animal
-    {     
-            double highestPerc=0;
+    {
+        double highestPerc = 0;
 
-            // search in the first part of DNA
-            for (Genome ch2 : Chromosomes2)
-            {
-                double perc = similarityPercentage(ch.getDNAFirst(), ch2.getDNAFirst()); // search in the first part
-                double perc2 = similarityPercentage(ch.getDNASecond(), ch2.getDNASecond()); // search in the second part
-                if(perc > highestPerc) highestPerc = perc;
-                if(perc2 > highestPerc) highestPerc = perc2;
-
-                percentages.push_back(highestPerc);
-                highestPerc = 0;
-            }
+        // search in the first part of DNA
+        for (Genome ch2 : Chromosomes2)
+        {
+            double perc = similarityPercentage(ch.getDNAFirst(), ch2.getDNAFirst());    // search in the first part
+            double perc2 = similarityPercentage(ch.getDNASecond(), ch2.getDNASecond()); // search in the second part
+            if (perc > highestPerc)
+                highestPerc = perc;
+            if (perc2 > highestPerc)
+                highestPerc = perc2;
+        }
+        percentages.push_back(highestPerc);
+        highestPerc = 0;
     }
 
     double total = 0;
-    for (double a: percentages) {
-            total += a;
+    for (double a : percentages)
+    {
+        total += a;
     }
 
     similarity = total / percentages.size();
     return similarity;
 }
 
-bool Animal::operator==(Animal &animal2){
+bool Animal::operator==(Animal &animal2)
+{
     int n = this->cell.getAllChromosomes().size();
     int m = animal2.cell.getAllChromosomes().size();
 
@@ -207,43 +210,63 @@ Animal Animal::AsexualReproduction()
 {
     srand(time(0));
     int n = cell.getAllChromosomes().size();
+    vector<string> twoNChromosomes;
     double similarity = 0;
-    Cell cell1;
+    int counter = 0;
+    Cell newCell;
 
-    for(int i=0; i<2; i++)
+    // create a vector from mother's DNAs (2n)
+    for (auto ch : cell.getAllChromosomes())
     {
-        for(int j=0; j<n; j++)
-        {
-            cell1.addChromosome(cell.getChromosome(j));
-        }
+        twoNChromosomes.push_back(ch.getDNAFirst());
+        twoNChromosomes.push_back(ch.getDNAFirst());
     }
 
-    while (true)
+    // choose 70% of chromosomes from the chromosomes of mother (n)
+    for (int i = 0; i < (floor(n * 0.7) * 2); i++)
     {
-        Cell newCell;
-        similarity = 0;
+        bool wasAdded = true;
+        string dna;
 
-        vector<int> AllChromosomes;
-        for (int i=0; i<2*n; i++)
+        // find a dna which is not duplicate
+        while (wasAdded)
         {
-            AllChromosomes.push_back(n);
+            int randNumber = rand() % n;
+            dna = cell.getAllChromosomes()[randNumber].getDNAFirst();
+
+            // check if the dna was added to the new cell or no
+            for (auto ch : newCell.getAllChromosomes())
+                if (ch.getDNAFirst() == dna)
+                    continue;
+
+            wasAdded = false;
         }
 
-        int n1=0;
-        while(n1 < n)
+        // delete the selected dna from thw 2n chromosomes vector
+        for (int i = 0; i < twoNChromosomes.size(); i++)
         {
-            int randNumber = rand() %1 + n;
-            while(isUniqueVal(AllChromosomes, randNumber) == false)
-            {
-                randNumber = rand() %1 + n;
-            }
-            newCell.addChromosome(cell1.getChromosome(randNumber));
-            n1++;
+            if (twoNChromosomes[i] == dna)
+                twoNChromosomes.erase(twoNChromosomes.begin() + i);
         }
 
-        Animal newAnimal(newCell);
+        Genome newGenome;
+        newGenome.setDNA(dna);
+        newCell.addChromosome(newGenome);
+    }
 
-        similarity = Similarity(newAnimal);
-        if (similarity > 70) return newAnimal;
-    }   
+    // randomely select the other part
+    for (int i = 0; i < (ceil(n * 0.3) * 2); i++)
+    {
+        int randNumber = rand() % twoNChromosomes.size();
+        string dna = cell.getAllChromosomes()[randNumber].getDNAFirst();
+
+        Genome newGenome;
+        newGenome.setDNA(dna);
+        newCell.addChromosome(newGenome);
+    }
+
+    Animal newAnimal(newCell);
+
+    similarity = Similarity(newAnimal);
+    return newAnimal;
 }
