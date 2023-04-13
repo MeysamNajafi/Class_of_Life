@@ -1,7 +1,7 @@
 #include "virus.h"
 #include "utils.h"
 
-void Genome::setRNA(string rna)
+void Virus::setRNA(string rna)
 {
     for (int i = 0; i < rna.size(); i++)
     {
@@ -9,7 +9,7 @@ void Genome::setRNA(string rna)
     }
 }
 
-string Genome::getRNA()
+string Virus::getRNA()
 {
     string RNAStr(RNA.begin(), RNA.end());
     return RNAStr;

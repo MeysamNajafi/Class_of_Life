@@ -57,3 +57,11 @@ string LCSubstr(string x, string y){
     }
     return longest;
 }
+
+bool isUniqueVal(const vector<int> &exclude, int test_val)
+{
+  for (int i = 0; i < exclude.size(); ++i)
+    if (test_val == exclude[i]) 
+        return false;
+  return true;
+}

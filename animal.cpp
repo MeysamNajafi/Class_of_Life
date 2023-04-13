@@ -3,6 +3,8 @@
 #include "utils.h"
 #include <algorithm>
 #include <unordered_set>
+#include<time.h>
+#include<cstdlib>
 
 // EDIT INDEX ALGORITHM
 double similarityPercentage(const string &str1, const string &str2)
@@ -88,6 +90,121 @@ bool Animal::operator==(Animal &animal2)
     }
     return false;
 }
+
+// Animal Animal::AsexualReproduction()
+// {
+//     srand(time(0));
+//     int n = cell.getAllChromosomes().size();
+//     double similarity = 0;
+
+//     while (true)
+//     {
+//         Cell newCell;
+//         similarity = 0;
+
+//         for (Genome g : cell.getAllChromosomes())
+//         { 
+//             Genome newGenome;
+//             newGenome.setDNA(g.getDNAFirst());
+//             newCell.addChromosome(newGenome);
+//         }
+
+//         // selecting random chromosome
+//         for (int i = 0; i < n; i++)
+//         {
+//             int dnaLength = rand() % (8 - 4 + 1) + 4; // LENGTH OF THE RANDOM DNA WILL BE BETWEEN 4 and 8
+//             string dna = ""; 
+//             for (int i = 0; i < dnaLength; i++) 
+//             {
+//                 int randNumber = rand() % 4;
+//                 char randChar;
+//                 switch (randNumber)
+//                 {
+//                     case 0:
+//                         randChar = 'A';
+//                         break;
+//                     case 1:
+//                         randChar = 'T';
+//                         break;
+//                     case 2:
+//                         randChar = 'C';
+//                         break;
+//                     case 3:
+//                         randChar = 'G';
+//                         break;
+//                 }
+//                 dna += randChar;
+//             }
+            
+//             Genome newGenome;
+//             newGenome.setDNA(dna);
+//             newCell.addChromosome(newGenome);
+//         }
+//         Animal newAnimal(newCell);
+
+//         similarity = Similarity(newAnimal);
+//         if (similarity > 70) return newAnimal;
+//     }   
+// }
+
+Animal Animal::operator+(Animal &animal2)
+{
+    srand(time(0));
+
+    int n = cell.getAllChromosomes().size();
+    int m = animal2.cell.getAllChromosomes().size();
+
+    if(n != m || n%2 != 0 || m%2 != 0)
+    {
+        throw "error!!!";
+    }
+
+    Animal obj1 = AsexualReproduction();
+    Animal obj2 = animal2.AsexualReproduction();
+    Cell newCell;
+
+    double similarity = 0;
+
+    while(true)
+    {
+        vector<int> AllChromosomes1;
+        vector<int> AllChromosomes2;
+
+        for (int i=0; i<n; i++)
+        {
+            AllChromosomes1.push_back(n);
+            AllChromosomes2.push_back(n);
+        }
+
+        int n1, n2=0;
+        while(n1 < n)
+        {
+            int randNumber1 = rand() %1 + n;
+            while(isUniqueVal(AllChromosomes1, randNumber1) == false)
+            {
+                randNumber1 = rand() %1 + n;
+            }
+            newCell.addChromosome(obj1.cell.getChromosome(randNumber1));
+            n1++;
+        }
+        
+        while(n2 < n)
+        {
+            int randNumber2 = rand() %1 + n;
+            while(isUniqueVal(AllChromosomes2, randNumber2) == false)
+            {
+                randNumber2 = rand() %1 + n;
+            }
+            newCell.addChromosome(obj2.cell.getChromosome(randNumber2));
+            n2++;
+        }
+        Animal newAnimal(newCell);
+
+        similarity = Similarity(newAnimal);
+        if (similarity > 70) return newAnimal;
+    } 
+}
+
 
 Animal Animal::AsexualReproduction()
 {
