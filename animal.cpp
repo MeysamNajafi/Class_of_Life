@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include<time.h>
 #include<cstdlib>
+#include<cmath>
 
 // EDIT INDEX ALGORITHM
 double similarityPercentage(const string &str1, const string &str2)

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <regex>
-#include <algorithm> 
+#include <algorithm>
 
 void Genome::setRNA(string rna)
 {
@@ -20,7 +20,6 @@ void Genome::setDNA(string dna)
         DNA.first.push_back(dna[i]);
         DNA.second.push_back(GivePair(dna[i]));
     }
-  
 }
 
 string Genome::getRNA()
@@ -54,16 +53,15 @@ void Genome::MakeDNABasedOnRNA()
 void Genome::SmallMutationRNA(char ch1, char ch2, int n)
 {
     // replace the first n ch1 in RNA with ch2
-    while (n > 0)
+    for (int i = 0; i < RNA.size(); i++)
     {
-        for (int i = 0; i < RNA.size(); i++)
+        if (RNA[i] == ch1)
         {
-            if (RNA[i] == ch1)
-            {
-                RNA[i] = ch2;
-                n -= 1;
-            }
+            RNA[i] = ch2;
+            n -= 1;
         }
+        if (n == 0)
+            break;
     }
 }
 
@@ -90,7 +88,7 @@ void Genome::SmallMutationDNA(char ch1, char ch2, int n)
 
 void Genome::BigMutationRNA(string str1, string str2)
 {
-    string RNAStr(RNA.begin(),RNA.end());
+    string RNAStr(RNA.begin(), RNA.end());
 
     RNAStr = regex_replace(RNAStr, regex(str1), str2);
     RNA.clear();
@@ -102,34 +100,35 @@ void Genome::BigMutationDNA(string str1, string str2)
 {
     string DNAFirstStr(DNA.first.begin(), DNA.first.end());
     string DNASecondStr(DNA.second.begin(), DNA.second.end());
-   
+
     int firstIndex = DNAFirstStr.find(str1);
     int secondIndex = DNASecondStr.find(str1);
 
     // substring not found in both strings
-    if (firstIndex == string::npos && secondIndex == string::npos) return;
+    if (firstIndex == string::npos && secondIndex == string::npos)
+        return;
 
     if ((firstIndex < secondIndex && firstIndex != string::npos) || (firstIndex != string::npos || secondIndex == string::npos)) // firstly found on the first string
     {
         DNAFirstStr = regex_replace(DNAFirstStr, regex(str1), str2);
         DNA.first.clear();
         for (char ch : DNAFirstStr)
-                DNA.first.push_back(ch);
+            DNA.first.push_back(ch);
 
         DNA.second.clear();
         for (char ch : DNAFirstStr)
-                DNA.second.push_back(GivePair(ch));
+            DNA.second.push_back(GivePair(ch));
     }
     else // firstly found on the second string
     {
         DNASecondStr = regex_replace(DNASecondStr, regex(str1), str2);
         DNA.second.clear();
         for (char ch : DNASecondStr)
-                DNA.second.push_back(ch);
+            DNA.second.push_back(ch);
 
         DNA.first.clear();
         for (char ch : DNASecondStr)
-                DNA.first.push_back(GivePair(ch));
+            DNA.first.push_back(GivePair(ch));
     }
 
     // for (char ch : DNA.first)
@@ -159,33 +158,34 @@ void Genome::ReverseMutationDNA(string str1)
 
     string str2 = str1;
     reverse(str2.begin(), str2.end());
-   
+
     int firstIndex = DNAFirstStr.find(str1);
     int secondIndex = DNASecondStr.find(str1);
 
     // substring not found in both strings
-    if (firstIndex == string::npos && secondIndex == string::npos) return;
+    if (firstIndex == string::npos && secondIndex == string::npos)
+        return;
 
-    if (firstIndex < secondIndex) // firstly found on the first string
+    if ((firstIndex < secondIndex && firstIndex != -1) || secondIndex == -1) // firstly found on the first string or it is not found in the second string
     {
         DNAFirstStr = regex_replace(DNAFirstStr, regex(str1), str2);
         DNA.first.clear();
         for (char ch : DNAFirstStr)
-                DNA.first.push_back(ch);
+            DNA.first.push_back(ch);
 
         DNA.second.clear();
         for (char ch : DNAFirstStr)
-                DNA.second.push_back(GivePair(ch));
+            DNA.second.push_back(GivePair(ch));
     }
     else // firstly found on the second string
     {
-       DNASecondStr = regex_replace(DNASecondStr, regex(str1), str2);
-       DNA.second.clear();
-       for (char ch : DNASecondStr)
+        DNASecondStr = regex_replace(DNASecondStr, regex(str1), str2);
+        DNA.second.clear();
+        for (char ch : DNASecondStr)
             DNA.second.push_back(ch);
 
-       DNA.first.clear();
-       for (char ch : DNASecondStr)
+        DNA.first.clear();
+        for (char ch : DNASecondStr)
             DNA.first.push_back(GivePair(ch));
     }
 }
