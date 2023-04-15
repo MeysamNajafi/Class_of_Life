@@ -13,6 +13,7 @@ public:
     void addChromosome(Genome genome);
     Genome getChromosome(int n);
     vector<Genome> getAllChromosomes();
+    void clear();
 
     void CellDeath();
 

@@ -7,6 +7,11 @@ void Cell::addChromosome(Genome genome)
     Chromosomes.push_back(genome);
 }
 
+void Cell::clear()
+{
+    Chromosomes.clear();
+}
+
 Genome Cell::getChromosome(int index)
 {
     if (index + 1 <= Chromosomes.size())

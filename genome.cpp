@@ -68,21 +68,21 @@ void Genome::SmallMutationRNA(char ch1, char ch2, int n)
 void Genome::SmallMutationDNA(char ch1, char ch2, int n)
 {
     // replace the first n ch1 in DNA with ch2 (in both lines)
-    while (n > 0)
+    for (int i = 0; i < DNA.first.size(); i++)
     {
-        for (int i = 0; i < DNA.first.size(); i++)
+        if (DNA.first[i] == ch1)
         {
-            if (DNA.first[i] == ch1)
-            {
-                DNA.first[i] = ch2;
-                n -= 1;
-            }
-            else if (DNA.second[i] == ch1)
-            {
-                DNA.second[i] = ch2;
-                n -= 1;
-            }
+            DNA.first[i] = ch2;
+            DNA.second[i] = GivePair(ch2);
+            n -= 1;
         }
+        else if (DNA.second[i] == ch1)
+        {
+            DNA.second[i] = ch2;
+            DNA.first[i] = GivePair(ch2);
+            n -= 1;
+        }
+        if(n ==0) break;
     }
 }
 
@@ -107,8 +107,8 @@ void Genome::BigMutationDNA(string str1, string str2)
     // substring not found in both strings
     if (firstIndex == string::npos && secondIndex == string::npos)
         return;
-
-    if ((firstIndex < secondIndex && firstIndex != string::npos) || (firstIndex != string::npos || secondIndex == string::npos)) // firstly found on the first string
+        
+    if ((firstIndex < secondIndex && firstIndex != string::npos) || (firstIndex != string::npos && secondIndex == string::npos)) // firstly found on the first string
     {
         DNAFirstStr = regex_replace(DNAFirstStr, regex(str1), str2);
         DNA.first.clear();
@@ -161,7 +161,8 @@ void Genome::ReverseMutationDNA(string str1)
 
     int firstIndex = DNAFirstStr.find(str1);
     int secondIndex = DNASecondStr.find(str1);
-
+    
+    cout << "INDEXES: " << firstIndex << "  " << secondIndex << endl;
     // substring not found in both strings
     if (firstIndex == string::npos && secondIndex == string::npos)
         return;
