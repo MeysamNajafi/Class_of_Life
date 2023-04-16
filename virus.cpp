@@ -1,5 +1,7 @@
 #include "virus.h"
 #include "utils.h"
+#include <iostream>
+#include <string>
 
 void Virus::setRNA(string rna)
 {
@@ -21,13 +23,13 @@ void Virus::Sickness(Animal animal)
     string VirusStr = this->getRNA();
 
     string longestStr = Chromosomes[0].getRNA();
-    for (int i=1; i<Chromosomes.size(); i++)
+    for (int i = 1; i < Chromosomes.size(); i++)
     {
         longestStr = LCSubstr(longestStr, Chromosomes[i].getRNA());
     }
-    
+
     string PairVirusStr;
-    for (int i=0; i<getRNA().size(); i++)
+    for (int i = 0; i < getRNA().size(); i++)
     {
         PairVirusStr = GivePair(VirusStr[i]);
     }
@@ -35,9 +37,12 @@ void Virus::Sickness(Animal animal)
     int firstIndex = VirusStr.find(longestStr);
     int secondIndex = PairVirusStr.find(longestStr);
 
-    if (firstIndex == string::npos && secondIndex == string::npos) return;
+    if (firstIndex == string::npos && secondIndex == string::npos)
+    {
+        cout << "It is not harmful \n";
+    }
     else
     {
-        delete this;
+        cout << "It is harmful \n";
     }
 }

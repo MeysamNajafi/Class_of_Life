@@ -1,5 +1,5 @@
 #pragma once
-#include "Animal.h"
+#include "animal.h"
 #include <vector>
 #include <string>
 

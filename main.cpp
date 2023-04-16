@@ -2,6 +2,7 @@
 #include "genome.h"
 #include "animal.h"
 #include "cell.h"
+#include "virus.h"
 #include <string>
 #include <iostream>
 using namespace std;
@@ -519,6 +520,28 @@ void animalMenu(bool isContinue = true)
     }
     animalMenu();
 }
+// ====================== ANIMAL ====================
+
+// ====================== VIRUS ====================
+void virusMenu(){
+    system("clear");
+
+    string rna;
+    int number;
+    Virus virus;
+
+    cout << "Enter an RNA to check if this harmful for an animal \n";
+    cin >> rna;
+    virus.setRNA(rna);
+
+    system("clear");
+    showAnimalInfo();
+    cout << "Enter a number to select an animal: \n";
+    cin >> number;
+
+    system("clear");
+    virus.Sickness(animals[number - 1]);
+}
 
 void menu()
 {
@@ -548,9 +571,9 @@ void menu()
     case 3:
         animalMenu(false);
         break;
-        // case 4:
-        //     chromosomeMenu();
-        //     break;
+    case 4:
+        virusMenu();
+        break;
     }
 }
 
