@@ -17,7 +17,7 @@ string Virus::getRNA()
 
 void Virus::Sickness(Animal animal)
 {
-    vector<Genome> Chromosomes = animal.cell.getAllChromosomes();
+    vector<Genome> Chromosomes = animal.getCell().getAllChromosomes();
     string VirusStr = this->getRNA();
 
     string longestStr = Chromosomes[0].getRNA();

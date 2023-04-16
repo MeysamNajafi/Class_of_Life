@@ -10,6 +10,8 @@ vector<Genome> genomes;
 Genome tempGenome;
 vector<Cell> cells;
 Cell tempCell;
+vector<Animal> animals;
+Animal tempAnimal;
 
 void menu();
 
@@ -117,7 +119,8 @@ void chromosomeMenu(bool isContinue = true)
         cout << "Here is the menu to manage Genome! \n";
         cout << "Enter the RNA (enter s to skip) \n";
         cin >> rna;
-        if (rna == "s") rna = "";
+        if (rna == "s")
+            rna = "";
         cout << "Enter the DNA \n";
         cin >> dna;
         tempGenome = createGenome(rna, dna);
@@ -178,21 +181,8 @@ void chromosomeMenu(bool isContinue = true)
 // ====================== GENOME ====================
 
 // ====================== CELL ====================
-// void showCellsInfo()
-// {
-//     for (int i = 0; i < cells.size(); i++)
-//     {
-//         cout << i + 1 << ". \n"; 
-//         Cell cell = cells[i];
-//         for (int j = 0; j < cell.getAllChromosomes().size(); j++)
-//         {
-//             Genome genome = genomes[j];
-//             cout << "   " << j + 1 << ". RNA: " << genome.getRNA() << "  /  DNA (First): " << genome.getDNAFirst() << "  /  DNA (Second): " << genome.getDNASecond() << "\n";
-//         }
-
-//     }
-// }
-void printCellChromosomes(){
+void printCellChromosomes()
+{
     int counter = 0;
     for (Genome genome : tempCell.getAllChromosomes())
     {
@@ -205,7 +195,7 @@ void cellSmallMutDNA()
 {
     system("clear");
     char toFind, toReplace;
-    int n,m;
+    int n, m;
 
     cout << "*** Small Mutation DNA in Cell *** \n";
     printCellChromosomes();
@@ -244,7 +234,7 @@ void cellBigMutDNA()
 void cellReverseMutDNA()
 {
     system("clear");
-    string  toReverse;
+    string toReverse;
     int n;
 
     cout << "*** Reverse Mutation DNA in Cell *** \n";
@@ -270,52 +260,41 @@ void cellPalindorme()
 
     tempCell.Palindorme(n);
 }
+Cell createCell(){
+    Cell newCell;
+    int number;
+    bool getNumber = true;
+    while (getNumber)
+    {
+        char command;
+        cin >> number;
+        newCell.addChromosome(genomes[number - 1]);
+
+        cout << "Do you want to add another chromosome? (y/n) \n";
+        cin >> command;
+        if (command == 'n')
+            getNumber = false;
+    }
+    return newCell;
+}
 
 void cellMenu(bool isContinue = true)
 {
     system("clear");
-    // reset tempCell 
-
     if (!isContinue)
     {
-        tempCell.clear();
-        int number;
-        bool getNumber = true;
         cout << "Here is the menu to manage Cell! \n";
         cout << "Enter a number to select a choromosome to add it to cell: \n";
-        for (int i = 0; i < genomes.size();i++)
+        for (int i = 0; i < genomes.size(); i++)
         {
             Genome genome = genomes[i];
-            cout << i+1 << ". RNA: " << genome.getRNA() << "  /  DNA (First): " << genome.getDNAFirst() << "  /  DNA (Second): " << genome.getDNASecond() << "\n";
+            cout << i + 1 << ". RNA: " << genome.getRNA() << "  /  DNA (First): " << genome.getDNAFirst() << "  /  DNA (Second): " << genome.getDNASecond() << "\n";
         }
 
-        while (getNumber)
-        {
-            char command;
-            cin >> number;
-            tempCell.addChromosome(genomes[number - 1]);
-
-            cout << "Do you want to add another chromosome? (y/n) \n";
-            cin >> command;
-            if (command == 'n')
-                getNumber = false;
-            
-        }
-
-       
+        tempCell = createCell();
 
         system("clear");
         cout << "Cell created successfully ;) \n";
-        // for (int i = 0; i < cells.size(); i++)
-        // {
-        //     Cell cell = cells[i];
-        //     for (int j = 0; j < cell.getAllChromosomes().size(); j++)
-        //     {
-        //         Genome genome = genomes[j];
-        //         cout << j + 1 << ". RNA: " << genome.getRNA() << "  /  DNA (First): " << genome.getDNAFirst() << "  /  DNA (Second): " << genome.getDNASecond() << "\n";
-        //     }
-            
-        // }
     }
     else
     {
@@ -364,6 +343,182 @@ void cellMenu(bool isContinue = true)
     }
     cellMenu();
 }
+// ====================== CELL ====================
+
+// ====================== ANIMAL ====================
+void showAnimalInfo(bool showCells = false)
+{
+    if (animals.size() == 0 || showCells)
+        for (int i = 0; i < cells.size(); i++)
+        {
+            cout << i + 1 << ". \n";
+            Cell cell = cells[i];
+            for (int j = 0; j < cell.getAllChromosomes().size(); j++)
+            {
+                Genome genome = cell.getAllChromosomes()[j];
+                cout << "   " << j + 1 << ". RNA: " << genome.getRNA() << "  /  DNA (First): " << genome.getDNAFirst() << "  /  DNA (Second): " << genome.getDNASecond() << "\n";
+            }
+        }
+    else
+        for (int i = 0; i < animals.size(); i++)
+        {
+            cout << i + 1 << ". \n";
+            Animal animal = animals[i];
+            for (int j = 0; j < animal.getCell().getAllChromosomes().size(); j++)
+            {
+                Genome genome = animal.getCell().getAllChromosomes()[j];
+                cout << "   " << j + 1 << ". RNA: " << genome.getRNA() << "  /  DNA (First): " << genome.getDNAFirst() << "  /  DNA (Second): " << genome.getDNASecond() << "\n";
+            }
+        }
+}
+void animalCheckSimilarity()
+{
+    system("clear");
+    int first, second;
+
+    cout
+        << "*** Check Similarity between 2 Animals *** \n";
+    showAnimalInfo();
+
+    cout << "Enter a number to select the first animal: \n";
+    cin >> first;
+
+    cout << "Enter a number to select the second animal: \n";
+    cin >> second;
+
+    double result =  animals[first - 1].Similarity(animals[second - 1]);
+    system("clear");
+    cout << "The similarity is: " << result << endl;
+}
+void animalAsexual()
+{
+    system("clear");
+    int first, second;
+
+    cout
+        << "*** Asexual Reproduction *** \n";
+    showAnimalInfo();
+
+    cout << "Enter a number to select the mother animal: \n";
+    cin >> first;
+
+    Animal newAnimal = animals[first - 1].AsexualReproduction();
+    animals.push_back(newAnimal);
+    system("clear");
+    cout << "Borned! \n";
+}
+void animalEquality()
+{
+    system("clear");
+    int first, second;
+
+    cout
+        << "*** Check Equailty of two Animal *** \n";
+    showAnimalInfo();
+
+    cout << "Enter a number to select the first animal: \n";
+    cin >> first;
+    cout << "Enter a number to select the second animal: \n";
+    cin >> second;
+
+    bool result = animals[first - 1] == animals[second - 1];
+    system("clear");
+    if (result)
+        cout << "Their Similarity is more than 70(%) and they are equal \n";
+    else
+        cout << "Their Similarity is less than 70(%) and they are not equal \n";
+}
+void animalSexual()
+{
+    system("clear");
+    int first, second;
+
+    cout
+        << "*** Sexual Reproduction between two Animal *** \n";
+    showAnimalInfo();
+
+    cout << "Enter a number to select the first animal: \n";
+    cin >> first;
+    cout << "Enter a number to select the second animal: \n";
+    cin >> second;
+
+    if (animals[first - 1] == animals[second - 1] == false){
+        cout << "Sexual Reproduction is not possible! \n";
+        return;
+    }
+
+    Animal newAnimal = animals[first - 1] + animals[second - 1];
+    animals.push_back(newAnimal);
+
+    system("clear");
+    cout << "Borned! \n";
+}
+void animalMenu(bool isContinue = true)
+{
+    if (!isContinue)
+    {
+        system("clear");
+        int num;
+        cout << "Here is the menu to manage Animal! \n";
+        showAnimalInfo(true);
+        cout << "Enter a number to select a cell \n";
+        cin >> num;
+        tempAnimal = Animal(cells[num - 1]);
+        animals.push_back(tempAnimal);
+
+        system("clear");
+        cout << "Animal created successfully ;) \n";
+    }
+    else
+    {
+        cout << "======================= INFO ====================\n\n";
+        showAnimalInfo();
+        cout << "\n======================= INFO ====================\n\n";
+    }
+
+    cout << "Now, enter a number to continue: \n";
+    cout << "0. Back \n";
+    cout << "1. Create New Animal \n";
+    cout << "2. Check Similarity \n";
+    cout << "3. Asexual Reproduction \n";
+    cout << "4. Check Equality \n";
+    cout << "5. Sexual Reproduction \n";
+    cout << "6. Check Cell Death \n";
+
+    int operand;
+    cin >> operand;
+    if (operand < 0 || operand > 6)
+    {
+        cout << "Wrong Number!";
+        animalMenu();
+    }
+
+    switch (operand)
+    {
+    case 0:
+        menu();
+        return;
+    case 1:
+        animalMenu(false);
+        break;
+    case 2:
+        animalCheckSimilarity();
+        break;
+    case 3:
+        animalAsexual();
+        break;
+    case 4:
+        animalEquality();
+        break;
+    case 5:
+        animalSexual();
+        break;
+    case 6:
+        tempAnimal.CellDeath();
+        break;
+    }
+    animalMenu();
+}
 
 void menu()
 {
@@ -390,9 +545,9 @@ void menu()
     case 2:
         cellMenu(false);
         break;
-        // case 3:
-        //     chromosomeMenu();
-        //     break;
+    case 3:
+        animalMenu(false);
+        break;
         // case 4:
         //     chromosomeMenu();
         //     break;
@@ -401,17 +556,23 @@ void menu()
 
 int main()
 {
-    // Genome gen, gen2, gen3, gen4;
-    // gen.setDNA("AGTACGCA");
+    // Genome gen, gen2, gen3, gen4, gen5, gen6, gen7;
+    // gen.setDNA("CCAA");
     // gen2.setDNA("TTAGAGCA");
     // gen3.setDNA("CGCTTTGCA");
     // gen4.setDNA("AAACAGCA");
+    // gen5.setDNA("CTATCG");
+    // gen6.setDNA("GGGTAT");
+    // gen7.setDNA("ATGTCATG");
 
     // Cell cell, cell2;
     // cell.addChromosome(gen);
     // cell.addChromosome(gen2);
     // cell.addChromosome(gen3);
-    // cell2.addChromosome(gen4);
+    // cell.addChromosome(gen4);
+    // cell.addChromosome(gen5);
+    // cell.addChromosome(gen6);
+    // cell.addChromosome(gen7);
 
     // Animal animal(cell);
     // Animal animal2(cell2);
@@ -419,6 +580,7 @@ int main()
     // cout << "SIMILARITY SCORE IS: " << similarity << endl;
 
     // Animal newBornAnimal = animal.AsexualReproduction();
+    
     // double newBornanimalSimilarity = animal.Similarity(newBornAnimal);
     // cout << "SIMILARITY SCORE OF NEW BORN ANIMAL IS: " << newBornanimalSimilarity << endl;
     menu();

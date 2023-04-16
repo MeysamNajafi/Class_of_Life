@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <string>
 
 char GivePair(char Nucleotide)
 {

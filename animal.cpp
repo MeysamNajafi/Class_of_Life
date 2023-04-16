@@ -3,9 +3,9 @@
 #include "utils.h"
 #include <algorithm>
 #include <unordered_set>
-#include<time.h>
-#include<cstdlib>
-#include<cmath>
+#include <time.h>
+#include <cstdlib>
+#include <cmath>
 
 // EDIT INDEX ALGORITHM
 double similarityPercentage(const string &str1, const string &str2)
@@ -43,6 +43,14 @@ double similarityPercentage(const string &str1, const string &str2)
 Animal::Animal(Cell cell)
 {
     this->cell = cell;
+}
+Animal::Animal()
+{
+}
+
+Cell Animal::getCell()
+{
+    return this->cell;
 }
 
 double Animal::Similarity(Animal &animal2)
@@ -99,7 +107,7 @@ Animal Animal::operator+(Animal &animal2)
     int n = cell.getAllChromosomes().size();
     int m = animal2.cell.getAllChromosomes().size();
 
-    if(n != m || n%2 != 0 || m%2 != 0)
+    if (n % 2 != 0 || m % 2 != 0)
     {
         throw "error!!!";
     }
@@ -108,48 +116,69 @@ Animal Animal::operator+(Animal &animal2)
     Animal obj2 = animal2.AsexualReproduction();
     Cell newCell;
 
-    double similarity = 0;
-
-    while(true)
+    for (int i = 0; i < n / 2; i++)
     {
-        vector<int> AllChromosomes1;
-        vector<int> AllChromosomes2;
-
-        for (int i=0; i<n; i++)
-        {
-            AllChromosomes1.push_back(n);
-            AllChromosomes2.push_back(n);
-        }
-
-        int n1, n2=0;
-        while(n1 < n)
-        {
-            int randNumber1 = rand() %1 + n;
-            while(isUniqueVal(AllChromosomes1, randNumber1) == false)
-            {
-                randNumber1 = rand() %1 + n;
-            }
-            newCell.addChromosome(obj1.cell.getChromosome(randNumber1));
-            n1++;
-        }
-        
-        while(n2 < n)
-        {
-            int randNumber2 = rand() %1 + n;
-            while(isUniqueVal(AllChromosomes2, randNumber2) == false)
-            {
-                randNumber2 = rand() %1 + n;
-            }
-            newCell.addChromosome(obj2.cell.getChromosome(randNumber2));
-            n2++;
-        }
-        Animal newAnimal(newCell);
-
-        similarity = Similarity(newAnimal);
-        if (similarity > 70) return newAnimal;
-    } 
+        int randNumber = rand() % n;
+        Genome newGenome;
+        newGenome.setDNA(obj1.getCell().getAllChromosomes()[randNumber].getDNAFirst());
+        newCell.addChromosome(newGenome);
+    }
+    for (int i = 0; i < m / 2; i++)
+    {
+        int randNumber = rand() % n;
+        Genome newGenome;
+        newGenome.setDNA(obj2.getCell().getAllChromosomes()[randNumber].getDNAFirst());
+        newCell.addChromosome(newGenome);
+    }
+    Animal newAnimal(newCell);
+    return newCell;
 }
 
+void Animal::CellDeath()
+{
+    for (int i = 0; i < cell.getAllChromosomes().size(); i++)
+    {
+        Genome chromosome = cell.getAllChromosomes()[i];
+        int n;
+        int AT, CG = 0;
+        string DNAFirstStr = chromosome.getDNAFirst();
+        string DNASecondStr = chromosome.getDNASecond();
+
+        for (int i = 0; i < DNAFirstStr.size(); i++)
+        {
+            if (DNASecondStr[i] != GivePair(DNAFirstStr[i]))
+            {
+                n++;
+            }
+        }
+
+        for (int i = 0; i < DNAFirstStr.size(); i++)
+        {
+            if (DNASecondStr[i] == 'A' && DNAFirstStr[i] == 'T')
+            {
+                AT++;
+            }
+            else if (DNASecondStr[i] == 'T' && DNAFirstStr[i] == 'A')
+            {
+                AT++;
+            }
+            else if (DNASecondStr[i] == 'C' && DNAFirstStr[i] == 'G')
+            {
+                CG++;
+            }
+            else if (DNASecondStr[i] == 'G' && DNAFirstStr[i] == 'C')
+            {
+                CG++;
+            }
+        }
+
+        if ((AT > CG * 3) || (n > 5))
+        {
+            cell.getAllChromosomes().erase(cell.getAllChromosomes().begin() + i);
+        }
+    }
+    
+}
 
 Animal Animal::AsexualReproduction()
 {
@@ -159,6 +188,7 @@ Animal Animal::AsexualReproduction()
     double similarity = 0;
     int counter = 0;
     Cell newCell;
+    int firstLoopCount = round(n * 0.7);
 
     // create a vector from mother's DNAs (2n)
     for (auto ch : cell.getAllChromosomes())
@@ -168,7 +198,7 @@ Animal Animal::AsexualReproduction()
     }
 
     // choose 70% of chromosomes from the chromosomes of mother (n)
-    for (int i = 0; i < (floor(n * 0.7) * 2); i++)
+    for (int i = 0; i < firstLoopCount; i++)
     {
         bool wasAdded = true;
         string dna;
@@ -200,11 +230,10 @@ Animal Animal::AsexualReproduction()
     }
 
     // randomely select the other part
-    for (int i = 0; i < (ceil(n * 0.3) * 2); i++)
+    for (int i = 0; i < n - firstLoopCount; i++)
     {
         int randNumber = rand() % twoNChromosomes.size();
-        string dna = cell.getAllChromosomes()[randNumber].getDNAFirst();
-
+        string dna = twoNChromosomes[randNumber];
         Genome newGenome;
         newGenome.setDNA(dna);
         newCell.addChromosome(newGenome);
@@ -212,6 +241,6 @@ Animal Animal::AsexualReproduction()
 
     Animal newAnimal(newCell);
 
-    similarity = Similarity(newAnimal);
+
     return newAnimal;
 }
