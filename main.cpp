@@ -1,4 +1,5 @@
 // #include "/Users/meysam/stdc++.h"
+// ******* NOTE ******* use sytem("CLS") instead system("clear") if your OS is windows
 #include "genome.h"
 #include "animal.h"
 #include "cell.h"
